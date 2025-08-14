@@ -15,7 +15,7 @@ const WorldChart = () => {
         try {
           setLoading(true);
           await getData();
-        } catch (error) {
+        } catch (error: any) {
           errorMsg.current = error.message;
         } finally {
           setLoading(false);

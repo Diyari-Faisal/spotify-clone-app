@@ -14,7 +14,6 @@ const MusicPlayer = () => {
   const [currentTime, setCurrentTime] = useState(0);
   const [duration, setDuration] = useState(0);
 
-
   useEffect(() => {
     const audio = audioRef.current;
     if (!audio) return;
@@ -44,13 +43,13 @@ const MusicPlayer = () => {
     setPlaying();
   };
 
-  const handleVolume = (e) => {
+  const handleVolume = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (audioRef.current) {
-      audioRef.current.volume = e.target.value;
+      audioRef.current.volume = Number(e.target.value);
     }
   };
 
-  const handleTimeChange = (e) => {
+  const handleTimeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const time = Number(e.target.value);
     if (audioRef.current) {
       audioRef.current.currentTime = time;

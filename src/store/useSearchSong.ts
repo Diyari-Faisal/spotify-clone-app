@@ -19,7 +19,7 @@ export const useSearchSong = create<searchSongStore>((set, get) => ({
     setQuery: (search) => {
         set(() => ({query: search}))
     },
-    fetched: false,
+    fetched: true,
     setFetched: (fetch) => {
         set(() => ({fetched: fetch}))
     },
