@@ -1,7 +1,8 @@
 @import "tailwindcss";
 
 @theme {
-    --color-react-grey: #323232
+    --color-react-grey: #323232;
+    --color-background: #121212;
 }
 
 @layer utilities {

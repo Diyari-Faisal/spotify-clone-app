@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import type { RootObject } from "../store/types"
 import { useFetchWorldChartStore } from "../store/useFetchWorldChartStore"
 import SongCard from "./SongCard"
@@ -8,23 +8,30 @@ const WorldChart = () => {
   const data: RootObject[] = useFetchWorldChartStore((state) => state.worldChart) || []
   const getData: () => Promise<void> = useFetchWorldChartStore((state) => state.getData);
 
-  useEffect(() => {
-    const fetchData = async () => {
-      setLoading(true);
-      await getData();
-      setLoading(false);
-    };
-    fetchData();
-  }, [])
-
-  if (loading) {
-    return (
-      <section className="flex flex-col items-center justify-center h-[60vh]">
-        <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-b-4 border-green-400 mb-6"></div>
-        <h2 className="text-xl font-semibold text-green-400">Loading World Chart...</h2>
-      </section>
-    );
-  }
+  const errorMsg = useRef("");
+  
+    useEffect(() => {
+      const fetchData = async () => {
+        try {
+          setLoading(true);
+          await getData();
+        } catch (error) {
+          errorMsg.current = error.message;
+        } finally {
+          setLoading(false);
+        }
+      };
+      fetchData();
+    }, [])
+  
+    if (loading || errorMsg.current !== "") {
+      return (
+        <section className="flex flex-col items-center justify-center h-[60vh]">
+          <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-b-4 border-green-400 mb-6"></div>
+          <h2 className="text-xl font-semibold text-green-400">{errorMsg.current ? errorMsg.current : `Loading World Chart...`}</h2>
+        </section>
+      );
+    }
 
   return (
     <section className="p-2">

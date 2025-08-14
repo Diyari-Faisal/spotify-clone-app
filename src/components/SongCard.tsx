@@ -26,7 +26,7 @@ const SongCard = ({ songName, songPic, artistName, songUrl }: props) => {
   };
 
   const setSong = () => {
-    setCurrentSong(songUrl);
+    setCurrentSong({ songName, songPic, artistName, songUrl });
   }
 
   return (
