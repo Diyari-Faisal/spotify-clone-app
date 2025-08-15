@@ -19,7 +19,8 @@ const SongCard = ({ songName, songPic, artistName, songUrl }: props) => {
   const setCurrentSong = useCurrentSong(state => state.getCurrentSong);
 
   const handleClick = () => {
-    setLike(prevLike => !prevLike)
+    setLike(prevLike => !prevLike);
+    console.log(like);
     liked
       ? unlikeSong(songUrl)
       : likeSong({ songName, songPic, artistName, songUrl });
