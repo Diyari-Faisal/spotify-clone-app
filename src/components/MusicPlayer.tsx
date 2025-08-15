@@ -86,11 +86,11 @@ const MusicPlayer = () => {
           autoPlay
         ></audio>
         <div className="flex flex-row gap-8 justify-center items-center w-full">
-          <FaBackwardStep onClick={handleSkip} className="text-white text-2xl" />
-          <button className="flex justify-center items-center bg-white size-10 rounded-full" onClick={handlePlay}>
+          <FaBackwardStep onClick={handleSkip} className="text-white text-2xl transition hover:-translate-y-1 hover:text-green-600" />
+          <button className="flex justify-center items-center bg-white size-10 rounded-full transition hover:-translate-y-1 hover:bg-green-600" onClick={handlePlay}>
             {audioRef.current?.paused ? <FaPlay /> : <FaPause />}
           </button>
-          <FaForwardStep onClick={handleSkip} className="text-white text-2xl" />
+          <FaForwardStep onClick={handleSkip} className="text-white text-2xl transition hover:-translate-y-1 hover:text-green-600" />
         </div>
         <div className="flex flex-row gap-2 items-center">
           <p className="text-white">{Math.floor(currentTime / 60)}:{(Math.floor(currentTime) % 60) > 9 ? Math.floor(Math.floor(currentTime) % 60) : "0" + (Math.floor(currentTime) % 60)}</p>
@@ -113,7 +113,7 @@ const MusicPlayer = () => {
           min={0}
           max={1}
           step={0.02}
-          className="w-full sm:w-32 accent-red-500 no-thumb"
+          className="w-full sm:w-32 accent-green-600 no-thumb"
           onChange={handleVolume}
         />
       </div>
