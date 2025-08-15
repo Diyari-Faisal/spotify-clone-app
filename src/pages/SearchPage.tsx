@@ -19,7 +19,7 @@ const SearchPage = () => {
       try {
         setLoading(true);
         await getData();
-      } catch (error) {
+      } catch (error: any) {
         errorMsg.current = error.message;
         console.error(error)
       } finally {
@@ -55,7 +55,7 @@ const SearchPage = () => {
       <div className="flex flex-col">
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-4 sm:gap-8">
             {searchedSong.hits && searchedSong.hits.map((element, index) => (
-              <SongCard key={index} songName={element.track.title} artistName={element.track.subtitle} songPic={element.track.images.coverart} songUrl={element.track.hub.actions[1].uri!} />
+              <SongCard key={index} songName={element.track.title} artistName={element.track.subtitle} songPic={element.track.images.coverart} songUrl={element.track.hub.actions[1]?.uri || ""} />
             ))}
           </div>
           

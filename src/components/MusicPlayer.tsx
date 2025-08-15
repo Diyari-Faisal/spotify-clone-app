@@ -1,7 +1,7 @@
 import { FaPlay, FaPause } from "react-icons/fa";
 import { FaBackwardStep, FaForwardStep } from "react-icons/fa6";
 import { useCurrentSong } from "../store/useCurrentSong"
-import { useRef, useState, useEffect } from "react";
+import { useRef, useState, useEffect, useCallback } from "react";
 import { useFetchWorldChartStore } from "../store/useFetchWorldChartStore";
 import type { RootObject } from "../store/types";
 
@@ -13,6 +13,14 @@ const MusicPlayer = () => {
   const audioRef = useRef<HTMLAudioElement>(null);
   const [currentTime, setCurrentTime] = useState(0);
   const [duration, setDuration] = useState(0);
+
+  const handleSkip = useCallback(() => {
+    const randomIndex = Math.floor(Math.random() * worldChart.length);
+    currentSong.songUrl = worldChart[randomIndex].attributes.previews[0].url;
+    currentSong.artistName = worldChart[randomIndex].attributes.artistName;
+    currentSong.songName = worldChart[randomIndex].attributes.name;
+    currentSong.songPic = worldChart[randomIndex].attributes.artwork.url;
+  }, [worldChart, currentSong]);
 
   useEffect(() => {
     const audio = audioRef.current;
@@ -31,7 +39,7 @@ const MusicPlayer = () => {
       audio.removeEventListener("timeupdate", updateTime);
       audio.removeEventListener("loadedmetadata", updateDuration);
     };
-  }, [currentSong.songUrl]);
+  }, [currentSong.songUrl, handleSkip]);
 
   const handlePlay = () => {
     if (!audioRef.current) return;
@@ -57,14 +65,6 @@ const MusicPlayer = () => {
     }
   };
 
-  const handleSkip = () => {
-    const randomIndex = Math.floor(Math.random() * worldChart.length);
-    currentSong.songUrl = worldChart[randomIndex].attributes.previews[0].url;
-    currentSong.artistName = worldChart[randomIndex].attributes.artistName;
-    currentSong.songName = worldChart[randomIndex].attributes.name;
-    currentSong.songPic = worldChart[randomIndex].attributes.artwork.url;
-  };
-
   return (
     <div className="fixed bottom-0 left-0 w-full bg-background p-2 sm:p-4 z-10 flex flex-col sm:flex-row items-center justify-between gap-2 sm:gap-0 shadow-lg">
       <div className="flex items-center w-full sm:w-auto gap-2">
@@ -88,12 +88,12 @@ const MusicPlayer = () => {
         <div className="flex flex-row gap-8 justify-center items-center w-full">
           <FaBackwardStep onClick={handleSkip} className="text-white text-2xl transition hover:-translate-y-1 hover:text-green-600" />
           <button className="flex justify-center items-center bg-white size-10 rounded-full transition hover:-translate-y-1 hover:bg-green-600" onClick={handlePlay}>
-            {audioRef.current?.paused ? <FaPlay /> : <FaPause />}
+            {playing ? <FaPause /> : <FaPlay />}
           </button>
           <FaForwardStep onClick={handleSkip} className="text-white text-2xl transition hover:-translate-y-1 hover:text-green-600" />
         </div>
         <div className="flex flex-row gap-2 items-center">
-          <p className="text-white">{Math.floor(currentTime / 60)}:{(Math.floor(currentTime) % 60) > 9 ? Math.floor(Math.floor(currentTime) % 60) : "0" + (Math.floor(currentTime) % 60)}</p>
+          <p className="text-white">{Math.floor(currentTime / 60)}:{(Math.floor(currentTime) % 60) > 9 ? Math.floor(Math.floor(currentTime) % 60) : "0" + Math.floor(Math.floor(currentTime) % 60)}</p>
           <input
             type="range"
             min={0}
@@ -103,7 +103,7 @@ const MusicPlayer = () => {
             onChange={handleTimeChange}
             className="accent-white h-2 w-md rounded-full hover:accent-green-600"
           />
-          <p className="text-white">{Math.floor(duration / 60)}:{(Math.floor(duration) % 60) > 9 ? Math.floor(Math.floor(duration) % 60) : "0" + (Math.floor(duration) % 60)}</p>
+          <p className="text-white">{Math.floor(duration / 60)}:{(Math.floor(duration) % 60) > 9 ? Math.floor(Math.floor(duration) % 60) : "0" + Math.floor(Math.floor(duration) % 60)}</p>
         </div>
       </div>
 

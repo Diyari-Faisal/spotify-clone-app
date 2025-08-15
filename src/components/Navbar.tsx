@@ -10,7 +10,7 @@ const Navbar = () => {
   const queryRef = useRef<HTMLInputElement>(null);
   const navigate = useNavigate();
 
-  const handleSubmit = (e) => {
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (queryRef.current?.value) {
       setQuery(queryRef.current.value);
